@@ -2,9 +2,12 @@ import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
 interface UserType {
-    id: string;
-    email: string
-    username: string
+    profile: {
+        id: string;
+        username: string;
+        email: string;
+        loginMethod: string;
+    }
 }
 
 export const useFetchProfile = () => {
@@ -14,18 +17,21 @@ export const useFetchProfile = () => {
             const token = localStorage.getItem('token')
 
             if (!token) {
-                console.error("Not token Found!")
+                console.error("No token found!")
+                throw new Error("No token found!")
             }
 
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-
-            console.log(response.data)
-
-            return response.data
+            try {     
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                return response.data
+            } catch (error: any) {
+                console.error("Error fetching profile:", error.response?.data || error.message)
+                throw error
+            }
         }
     })
 }

@@ -18,11 +18,18 @@ const FormLogin = () => {
     resolver: zodResolver(loginSchema)
   })
 
-  const { control, handleSubmit } = form
+  const { control, handleSubmit, setError } = form
 
   const onSubmit = handleSubmit((values) => {
-    mutate(values)
+    mutate(values, {
+      onError: (error) => {
+        setError("password", {
+          message: "password wrong, try again!"
+        })
+      }
+    })
   })
+  
   return (
     <>
     <Form {...form}>
