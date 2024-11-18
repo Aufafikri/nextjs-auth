@@ -8,7 +8,7 @@ const GithubCallback = () => {
         const token = params.get('token')
 
         if(token) {
-            localStorage.setItem('token', token)
+            localStorage.setItem('access_token', token)
             window.location.href = '/dashboard'
         } else {
             console.error("token doesnt match")

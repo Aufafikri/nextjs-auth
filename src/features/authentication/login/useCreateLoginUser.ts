@@ -15,7 +15,8 @@ export const useCreateLoginUser = () => {
             return response.data
         },
         onSuccess: (data) => {
-            localStorage.setItem('token', data.access_token)
+            localStorage.setItem('access_token', data.access_token)
+            localStorage.setItem('refresh_token', data.refresh_token)
             setTimeout(() => {
                 router.push(`/dashboard`)
             }, 1000);
